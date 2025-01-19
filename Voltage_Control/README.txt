@@ -1,0 +1,1 @@
+Control voltage using voltage divider by using a reciver and transmitter to control it wirelessly
