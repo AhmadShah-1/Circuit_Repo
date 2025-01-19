@@ -8,10 +8,17 @@ const byte address[6] = "00001";
 
 void setup() {
   Serial.begin(9600);
-  radio.begin();
+  Serial.println("Receiver Starting...");
+
+  if (!radio.begin()) {
+    Serial.println("nRF24L01 module not detected. Check connections!");
+    while (true); // Halt execution
+  }
   radio.openReadingPipe(0, address);
   radio.setPALevel(RF24_PA_MIN);
   radio.startListening();
+
+  Serial.println("nRF24L01 initialized successfully!");
 }
 
 void loop() {
@@ -19,7 +26,10 @@ void loop() {
   if (radio.available()) {
     char receivedData[32];
     radio.read(&receivedData, sizeof(receivedData));
+    Serial.print("Received: ");
     Serial.println(receivedData);
+  } else {
+    Serial.println("No data available. Check transmitter.");
   }
 
   // Check for user input to send commands
@@ -27,10 +37,13 @@ void loop() {
     char command = Serial.read();
     if (command == 'p' || command == 'c') {
       radio.stopListening();
-      radio.write(&command, sizeof(command));
+      if (radio.write(&command, sizeof(command))) {
+        Serial.println("Command sent successfully!");
+      } else {
+        Serial.println("Failed to send command. Check module.");
+      }
       radio.startListening();
     }
   }
 
-  delay(500);
 }
