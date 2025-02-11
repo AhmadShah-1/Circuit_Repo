@@ -22,7 +22,7 @@ const byte address[6] = "00001";
 #define VOLTAGE_PIN A0
 const float rOhm1 = 30000.0;
 const float rOhm2 = 7500.0;
-const float refVoltage = 3.3;
+const float refVoltage = 5;
 
 int currentStep = 0;
 
