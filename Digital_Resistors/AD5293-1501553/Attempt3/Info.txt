@@ -1,0 +1,1 @@
+This file attempt to send commands from the raspberry pi to the arduino to change the step of the voltage divide
